@@ -3,45 +3,37 @@ package com.example.quizapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.quizapp.ui.theme.QuizAppTheme
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.navigation.compose.*
+import com.example.quizapp.ui.*
+import com.example.quizapp.ui.screens.*
+import com.example.quizapp.viewmodel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            QuizAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            Text("Test")
+            val authViewModel = remember { AuthViewModel() }
+            QuizAppNavigation(authViewModel)
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun QuizAppNavigation(authViewModel: AuthViewModel) {
+    val navController = rememberNavController()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    QuizAppTheme {
-        Greeting("Android")
+    NavHost(navController, startDestination = "register") {
+        composable("register") { RegisterScreen(navController, authViewModel) }
+        composable("login") { LoginScreen(navController, authViewModel) }
+        composable("home") { HomeScreen(navController) }
     }
 }
+
+// INFO !! //
+
+// Jetpack Compose Navigation set up.
+// Navigating between "Register", "Login" and "Home" screens.
+// Opens up the "Register screen" when the app launches.
