@@ -28,7 +28,7 @@ fun QuizAppNavigation(authViewModel: AuthViewModel) {
 
     NavHost(
         navController = navController,
-        startDestination = "home"
+        startDestination = "login"
     ) {
         composable("register") { RegisterScreen(navController, authViewModel) }
         composable("login") { LoginScreen(navController, authViewModel) }
@@ -44,6 +44,19 @@ fun QuizAppNavigation(authViewModel: AuthViewModel) {
             QuizScreen(
                 navController = navController,
                 category = backStackEntry.arguments?.getString("category") ?: "General"
+            )
+        }
+        composable(
+            "results/{score}/{total}",
+            arguments = listOf(
+                navArgument("score") { type = NavType.IntType },
+                navArgument("total") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            ResultsScreen(
+                navController = navController,
+                score = backStackEntry.arguments?.getInt("score") ?: 0,
+                totalQuestions = backStackEntry.arguments?.getInt("total") ?: 10
             )
         }
     }
