@@ -10,8 +10,19 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-val GeneralKnowledgeColor = Color(0xFFFFC107)
+val GeneralKnowledgeColor = Color(0xFFFF9800)
 val SportsColor = Color(0xFF03A9F4)
 val HistoryColor = Color(0xFF4CAF50)
 val MoviesColor = Color(0xFF9C27B0)
 val VideoGamesColor = Color(0xFFFF5722)
+
+fun getCategoryColor(categoryName: String): Color {
+    return when(categoryName) {
+        "General Knowledge" -> GeneralKnowledgeColor
+        "Sports" -> SportsColor
+        "History" -> HistoryColor
+        "Movies" -> MoviesColor
+        "Video Games" -> VideoGamesColor
+        else -> Purple40
+    }
+}
