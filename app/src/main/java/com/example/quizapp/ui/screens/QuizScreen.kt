@@ -14,14 +14,34 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.quizapp.ui.theme.getCategoryColor
+import androidx.lifecycle.viewmodel.compose.viewModel
+import QuizViewModel
 
 @Composable
 fun QuizScreen(navController: NavController, category: String) {
-    var currentQuestion by remember { mutableIntStateOf(1) }
-    val totalQuestions = 10
+    val quizViewModel: QuizViewModel = viewModel()
+    val questions by quizViewModel.questions.collectAsState()
+    val isLoading by quizViewModel.isLoading.collectAsState()
+    val currentQuestionIndex by quizViewModel.currentQuestionIndex
+
+    LaunchedEffect(category) {
+        quizViewModel.getQuestionsByCategory(category)
+    }
+
+    if (isLoading) {
+        CircularProgressIndicator()
+        return
+    }
+
+    if (questions.isEmpty()) {
+        Text("No questions available")
+        return
+    }
+
+    val currentQuestion = questions[currentQuestionIndex]
+    val totalQuestions = questions.size
     val categoryColor = getCategoryColor(category)
 
     Column(
@@ -30,7 +50,6 @@ fun QuizScreen(navController: NavController, category: String) {
             .padding(16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-
         // Header Section
         Spacer(modifier = Modifier.height(30.dp))
         Column {
@@ -41,7 +60,7 @@ fun QuizScreen(navController: NavController, category: String) {
                 color = categoryColor
             )
             Text(
-                text = "Question $currentQuestion/$totalQuestions",
+                text = "Question ${currentQuestionIndex + 1}/$totalQuestions",
                 fontSize = 16.sp,
                 color = Color.Gray
             )
@@ -56,7 +75,7 @@ fun QuizScreen(navController: NavController, category: String) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Sample text",
+                text = currentQuestion.question,
                 fontSize = 20.sp,
                 modifier = Modifier.padding(vertical = 32.dp),
                 textAlign = TextAlign.Center
@@ -72,9 +91,19 @@ fun QuizScreen(navController: NavController, category: String) {
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
         ) {
-            items(4) { index ->
+            items(currentQuestion.options) { option ->
                 Button(
-                    onClick = { },
+                    onClick = {
+                        if (option == currentQuestion.correctAnswer) {
+                            quizViewModel.score.intValue++
+                        }
+
+                        if (currentQuestionIndex < totalQuestions - 1) {
+                            quizViewModel.currentQuestionIndex.intValue++
+                        } else {
+                            navController.navigate("results/${quizViewModel.score.intValue}/$totalQuestions")
+                        }
+                    },
                     modifier = Modifier
                         .height(80.dp)
                         .fillMaxWidth(),
@@ -84,7 +113,7 @@ fun QuizScreen(navController: NavController, category: String) {
                     )
                 ) {
                     Text(
-                        text = "${index + 1}",
+                        text = option,
                         fontSize = 18.sp,
                         modifier = Modifier.padding(8.dp),
                         textAlign = TextAlign.Center
@@ -92,8 +121,6 @@ fun QuizScreen(navController: NavController, category: String) {
                 }
             }
         }
-
-
 
         // Navigation Footer
         Row(

@@ -79,9 +79,3 @@ fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int)
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ResultsScreenPreview() {
-    ResultsScreen(navController = NavController(context = androidx.compose.ui.platform.LocalContext.current), score = 8, totalQuestions = 10)
-}
-
