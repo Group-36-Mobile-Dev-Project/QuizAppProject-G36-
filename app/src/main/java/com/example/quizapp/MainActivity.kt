@@ -31,7 +31,7 @@ fun QuizAppNavigation(authViewModel: AuthViewModel) {
     ) {
         composable("register") { RegisterScreen(navController, authViewModel) }
         composable("login") { LoginScreen(navController, authViewModel) }
-        composable("home") { HomeScreen(navController) }
+        composable("home") { HomeScreen(navController, authViewModel) }
         composable(
             "quiz/{category}",
             arguments = listOf(
@@ -56,6 +56,12 @@ fun QuizAppNavigation(authViewModel: AuthViewModel) {
                 navController = navController,
                 score = backStackEntry.arguments?.getInt("score") ?: 0,
                 totalQuestions = backStackEntry.arguments?.getInt("total") ?: 10
+            )
+        }
+        composable("profile") {
+            ProfileScreen(
+                navController = navController,
+                authViewModel = authViewModel
             )
         }
     }

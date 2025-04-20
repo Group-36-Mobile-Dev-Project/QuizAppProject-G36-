@@ -6,11 +6,31 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
+import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class AuthViewModel : ViewModel() {
+    val currentUser: FirebaseUser?
+        get() = FirebaseAuth.getInstance().currentUser
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    private val _username = MutableStateFlow<String?>(null)
+    val username: StateFlow<String?> = _username
+
+    fun fetchUsername(userId: String) {
+        viewModelScope.launch {
+            db.collection("users").document(userId).get()
+                .addOnSuccessListener { document ->
+                    _username.value = document.getString("username")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("AuthViewModel", "Error fetching username", e)
+                }
+        }
+    }
 
     fun registerUser(email: String, password: String, username: String, onResult: (Boolean, String) -> Unit) {
         viewModelScope.launch {

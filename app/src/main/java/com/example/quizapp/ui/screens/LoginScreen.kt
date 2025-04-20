@@ -27,7 +27,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "VJA Quizz",
+            text = "Beetlequiz",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
