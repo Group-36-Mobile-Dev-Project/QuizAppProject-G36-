@@ -38,7 +38,7 @@ fun HomeScreen(navController: NavController, authViewModel: AuthViewModel) {
         ) {
             Text(
                 text = "Challenge Your Mind, Conquer the Game!",
-                style = MaterialTheme.typography.displayLarge,
+                style = MaterialTheme.typography.displayMedium,
                 modifier = Modifier.weight(1f)
             )
 

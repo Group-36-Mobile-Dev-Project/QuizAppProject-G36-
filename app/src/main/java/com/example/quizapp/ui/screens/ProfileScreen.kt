@@ -60,6 +60,17 @@ fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
             Spacer(modifier = Modifier.height(40.dp))
 
             Button(
+                onClick = {
+                    authViewModel.logout()
+                    navController.popBackStack("login", inclusive = false)
+                },
+                modifier = Modifier.fillMaxWidth(0.8f),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+            ) {
+                Text("Log Out", fontSize = 18.sp)
+            }
+
+            Button(
                 onClick = { navController.navigate("home") },
                 modifier = Modifier.fillMaxWidth(0.8f)
             ) {
@@ -88,11 +99,10 @@ fun UserInfoItem(label: String, value: String) {
     }
 }
 
+// Replace the existing formatTimestamp function
 private fun formatTimestamp(timestamp: Long?): String {
-    return if (timestamp != null) {
-        val sdf = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault())
-        sdf.format(Date(timestamp))
-    } else {
-        "Unknown"
-    }
+    return timestamp?.let {
+        SimpleDateFormat("MMM d, yyyy 'at' h:mm a", Locale.getDefault())
+            .format(Date(it))
+    } ?: "Unknown"
 }
