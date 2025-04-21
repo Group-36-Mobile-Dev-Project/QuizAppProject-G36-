@@ -1,11 +1,13 @@
 package com.example.quizapp.ui.screens
 
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,10 +16,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.quizapp.ui.theme.getCategoryColor
 
 @Composable
 fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int) {
+    val context = LocalContext.current
+    val shareMessage = "I got $score/$totalQuestions points in Beetlequiz!"
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -33,7 +37,7 @@ fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int)
             modifier = Modifier.size(120.dp)
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         // Score Display
         Text(
@@ -76,6 +80,45 @@ fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int)
         ) {
             Text("Retry Quiz", fontSize = 16.sp)
         }
+
+        // Share Button
+        Button(
+            onClick = {
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, shareMessage)
+                    type = "text/plain"
+                }
+                context.startActivity(Intent.createChooser(intent, "Share Score Via"))
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = Color.White
+            )
+        ) {
+            Text("Share Score", fontSize = 16.sp)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Retry Button (existing button)
+        Button(
+            onClick = {
+                navController.popBackStack()
+                navController.navigate("home")
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = Color.White
+            )
+        ) {
+            Text("Retry Quiz", fontSize = 16.sp)
+        }
     }
 }
+
+
+
 
