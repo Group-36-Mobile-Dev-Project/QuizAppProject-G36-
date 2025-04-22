@@ -3,7 +3,6 @@ package com.example.quizapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
@@ -31,7 +30,7 @@ fun QuizAppNavigation(authViewModel: AuthViewModel) {
     ) {
         composable("register") { RegisterScreen(navController, authViewModel) }
         composable("login") { LoginScreen(navController, authViewModel) }
-        composable("home") { HomeScreen(navController, authViewModel) }
+        composable("home") { HomeScreen(navController) }
         composable(
             "quiz/{category}",
             arguments = listOf(
@@ -46,8 +45,9 @@ fun QuizAppNavigation(authViewModel: AuthViewModel) {
             )
         }
         composable(
-            "results/{score}/{total}",
+            "results/{category}/{score}/{total}",
             arguments = listOf(
+                navArgument("category") { type = NavType.StringType },
                 navArgument("score") { type = NavType.IntType },
                 navArgument("total") { type = NavType.IntType }
             )
@@ -55,7 +55,8 @@ fun QuizAppNavigation(authViewModel: AuthViewModel) {
             ResultsScreen(
                 navController = navController,
                 score = backStackEntry.arguments?.getInt("score") ?: 0,
-                totalQuestions = backStackEntry.arguments?.getInt("total") ?: 10
+                totalQuestions = backStackEntry.arguments?.getInt("total") ?: 10,
+                category = backStackEntry.arguments?.getString("category") ?: "General"
             )
         }
         composable("profile") {
