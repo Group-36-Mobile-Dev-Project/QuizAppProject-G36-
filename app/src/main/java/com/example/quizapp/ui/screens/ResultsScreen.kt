@@ -16,11 +16,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.quizapp.ui.theme.getCategoryColor
 
 @Composable
-fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int) {
+fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int, category: String) {
     val context = LocalContext.current
     val shareMessage = "I got $score/$totalQuestions points in Beetlequiz!"
+    val categoryColor = getCategoryColor(category)
 
     Column(
         modifier = Modifier
@@ -33,7 +35,7 @@ fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int)
         Icon(
             imageVector = Icons.Default.Refresh,
             contentDescription = "Results",
-            tint = MaterialTheme.colorScheme.primary,
+            tint = categoryColor,
             modifier = Modifier.size(120.dp)
         )
 
@@ -44,7 +46,7 @@ fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int)
             text = "$score/$totalQuestions",
             fontSize = 48.sp,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
+            color = categoryColor
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -53,7 +55,8 @@ fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int)
         Text(
             text = "Quiz Completed!",
             fontSize = 24.sp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Bold,
+            color = categoryColor
         )
 
         Text(
@@ -74,11 +77,15 @@ fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int)
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = categoryColor.copy(alpha = 0.3f),
                 contentColor = Color.White
             )
         ) {
-            Text("Retry Quiz", fontSize = 16.sp)
+            Text(
+                text = "Retry Quiz",
+                fontSize = 16.sp,
+                color = categoryColor
+            )
         }
 
         // Share Button
@@ -101,21 +108,6 @@ fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
-        // Retry Button (existing button)
-        Button(
-            onClick = {
-                navController.popBackStack()
-                navController.navigate("home")
-            },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = Color.White
-            )
-        ) {
-            Text("Retry Quiz", fontSize = 16.sp)
-        }
     }
 }
 

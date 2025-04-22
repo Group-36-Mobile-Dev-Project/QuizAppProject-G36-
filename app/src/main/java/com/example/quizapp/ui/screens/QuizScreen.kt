@@ -18,6 +18,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.quizapp.ui.theme.getCategoryColor
 import androidx.lifecycle.viewmodel.compose.viewModel
 import QuizViewModel
+import androidx.compose.foundation.background
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableIntStateOf
+import kotlinx.coroutines.delay
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.layout.size
 
 @Composable
 fun QuizScreen(navController: NavController, category: String) {
@@ -25,9 +33,24 @@ fun QuizScreen(navController: NavController, category: String) {
     val questions by quizViewModel.questions.collectAsState()
     val isLoading by quizViewModel.isLoading.collectAsState()
     val currentQuestionIndex by quizViewModel.currentQuestionIndex
+    var timeLeft by remember { mutableIntStateOf(15) }
 
     LaunchedEffect(category) {
         quizViewModel.getQuestionsByCategory(category)
+    }
+
+    // Logic for timer
+    LaunchedEffect(currentQuestionIndex) {
+        timeLeft = 15
+        while (timeLeft > 0) {
+            delay(1000L)
+            timeLeft--
+        }
+        if (currentQuestionIndex < questions.size - 1) {
+            quizViewModel.currentQuestionIndex.intValue++
+        } else {
+            navController.navigate("results/${quizViewModel.score.intValue}/${questions.size}")
+        }
     }
 
     if (isLoading) {
@@ -50,23 +73,32 @@ fun QuizScreen(navController: NavController, category: String) {
             .padding(16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+
         // Header Section
-        Spacer(modifier = Modifier.height(30.dp))
-        Column {
-            Text(
-                text = category,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = categoryColor
-            )
-            Text(
-                text = "Question ${currentQuestionIndex + 1}/$totalQuestions",
-                fontSize = 16.sp,
-                color = Color.Gray
-            )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(0.3f),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column {
+                Text(
+                    text = category,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = categoryColor
+                )
+                Text(
+                    text = "Question ${currentQuestionIndex + 1}/$totalQuestions",
+                    fontSize = 16.sp,
+                    color = Color.Gray
+                )
+            }
         }
 
-        // Question Content
+
+        // Question Section
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -82,7 +114,30 @@ fun QuizScreen(navController: NavController, category: String) {
             )
         }
 
-        // Answer Options Grid
+        // Timer Section
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 20.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(CircleShape)
+                    .background(categoryColor.copy(alpha = 0.3f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "$timeLeft s",
+                    color = if (timeLeft <= 5) Color.Red else categoryColor,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+
+        // Answer Options Grid Section
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -101,7 +156,7 @@ fun QuizScreen(navController: NavController, category: String) {
                         if (currentQuestionIndex < totalQuestions - 1) {
                             quizViewModel.currentQuestionIndex.intValue++
                         } else {
-                            navController.navigate("results/${quizViewModel.score.intValue}/$totalQuestions")
+                            navController.navigate("results/${category}/${quizViewModel.score.intValue}/$totalQuestions")
                         }
                     },
                     modifier = Modifier
@@ -122,7 +177,7 @@ fun QuizScreen(navController: NavController, category: String) {
             }
         }
 
-        // Navigation Footer
+        // Navigation Footer Section
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()

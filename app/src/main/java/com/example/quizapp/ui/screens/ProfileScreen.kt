@@ -40,7 +40,9 @@ fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
             Icon(
                 imageVector = Icons.Default.AccountCircle,
                 contentDescription = "Profile",
-                modifier = Modifier.size(100.dp),
+                modifier = Modifier
+                    .size(300.dp)
+                    .padding(64.dp),
                 tint = MaterialTheme.colorScheme.primary
             )
 
