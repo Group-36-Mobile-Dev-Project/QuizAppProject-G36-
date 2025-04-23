@@ -24,6 +24,14 @@ fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int,
     val shareMessage = "I got $score/$totalQuestions points in Beetlequiz!"
     val categoryColor = getCategoryColor(category)
 
+    // Inside ResultsScreen composable (before the Column)
+    val slogan = when {
+        (score.toFloat() / totalQuestions.toFloat() >= 0.8f) -> "Very good, keep it up!"
+        (score.toFloat() / totalQuestions.toFloat() < 0.6f) -> "Try next time, keep it up!"
+        else -> "Good effort, keep practicing!"
+    }
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,13 +59,16 @@ fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int,
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Result Text
+        // Dynamic Slogan (replaces old texts)
         Text(
-            text = "Quiz Completed!",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = categoryColor
+            text = slogan,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = categoryColor,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(vertical = 8.dp)
         )
+
 
         Text(
             text = "You answered $score questions correctly",
