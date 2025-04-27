@@ -9,6 +9,8 @@ import kotlinx.coroutines.launch
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.tasks.await
+
 
 class AuthViewModel : ViewModel() {
     val currentUser: FirebaseUser?
@@ -76,5 +78,20 @@ class AuthViewModel : ViewModel() {
     fun logout() {
         auth.signOut()
     }
+    suspend fun deleteAccount(): Result<Unit> {
+        return try {
+            FirebaseAuth.getInstance().currentUser?.delete()?.await()
+            logout()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
+    fun sendPasswordResetEmail(email: String) {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                // Optional: Handle completion if needed
+            }
+    }
 }
