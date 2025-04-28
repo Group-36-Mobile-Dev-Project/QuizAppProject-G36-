@@ -1,5 +1,31 @@
-# QuizAppProject-G36-
-A trivia or quiz app where users can answer questions on various topics.
+# Beetlequiz
+
+![beetlequiz](https://github.com/user-attachments/assets/9336d19e-98b6-4245-b444-a10c488855c4)
+
+##  Table of Contents
+
+1. [Installation](#installation)
+2. [Requirements](#requirements)
+3. [Function Preview](#function-preview)
+   - [Login & Register](#login--register)
+   - [Profile](#profile)
+   - [Categories](#categories)
+   - [Quizzes](#quizzes)
+   - [Results](#results)
+4. [Contribution](#quizzes)
+5. [License](#quizzes)
+6. [Author](#quizzes)
+
+## Introduction
+
+**Beetlequiz** is a trivia app, where users can answer questions on various topics.
+Built with modern Android development practices, the app offers:
+- **Category Selection**: Choosing from diverse topics like General Knowledge, Sports, Movies, and more
+- **Timed Challenges**: 15-second per question limit with visual countdown
+- **Progress Tracking**: Real-time score updates and final results breakdown
+- **Secure Authentication**: Email/password signup/login with Firebase Auth
+- **Profile Management**: View account details, reset password, or delete account
+- **Dynamic Content**: Firestore-powered questions with image support
 
 ## Installation 
 
@@ -44,7 +70,7 @@ run app on android studio
 ### Login & Register 
 <sup><sub>LoginScreen.kt & RegisterScreen.kt</sub></sup>
 
-Features
+**Features**
 - Data stored in Firestore
 - Username appears on profile screen
 ---
@@ -55,7 +81,7 @@ Features
 ### Profile
 <sup><sub>ProfileScreen.kt</sub></sup>
 
-Features
+**Features**
 - Account deletion
 - Password resetting
 - Logging out
@@ -79,7 +105,7 @@ Features
 ### Quizzes
 <sup><sub>QuizScreen.kt</sub></sup>
 
-Features
+**Features**
 - Category color based on quiz
 - Timer
 - Correct & Incorrect answers
@@ -116,6 +142,12 @@ General
 
 ---
 ### Results
+<sup><sub>ResultsScreen.kt</sub></sup>
+
+**Features**
+- Sharing score with others
+- Retrying quiz
+- Encouraging statements!
 
 Less than 5 Score
   
@@ -141,5 +173,25 @@ Less than 5 Score
 </details>
 
 
+---
+## Contribution
 
+Contribution is possible and welcome as well!
 
+If you want to contribute, please read this very nice tutorial written by firstcontributions:
+- https://github.com/firstcontributions/first-contributions
+
+Afterwards, you're free to contribute as you wish!
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+## Author
+
+Project was possible with the contributions from:
+- Ville Kahelin
+- Joona Muikku
+- Ankit Rawat
