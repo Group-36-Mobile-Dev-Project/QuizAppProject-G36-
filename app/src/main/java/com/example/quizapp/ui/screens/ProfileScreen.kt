@@ -26,6 +26,10 @@ fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    LaunchedEffect(currentUser) {
+        currentUser?.uid?.let { authViewModel.fetchUsername(it) }
+    }
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {

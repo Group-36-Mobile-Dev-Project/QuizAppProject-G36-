@@ -26,6 +26,10 @@ import kotlinx.coroutines.delay
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
+
 
 @Composable
 fun QuizScreen(navController: NavController, category: String) {
@@ -103,14 +107,35 @@ fun QuizScreen(navController: NavController, category: String) {
             modifier = Modifier
                 .weight(1f)
                 .padding(10.dp),
-            verticalArrangement = Arrangement.Bottom,
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            if (currentQuestion.imageUrl.isNotEmpty()) {
+                AsyncImage(
+                    model = currentQuestion.imageUrl,
+                    contentDescription = "Question image",
+                    modifier = Modifier
+                        .height(200.dp)
+                        .padding(bottom = 16.dp)
+                        .fillMaxWidth(),
+                    contentScale = ContentScale.Fit
+                )
+            }
             Text(
                 text = currentQuestion.question,
-                fontSize = 20.sp,
-                modifier = Modifier.padding(vertical = 32.dp),
-                textAlign = TextAlign.Center
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp), // Horizontal padding
+                textAlign = TextAlign.Center,
+                lineHeight = 24.sp,
+                maxLines = 3,
+                softWrap = true,
+                minLines = 1,
+                fontSize = when (currentQuestion.question.length) {
+                    in 0..50 -> 22.sp
+                    in 51..100 -> 20.sp
+                    else -> 18.sp
+                }
             )
         }
 
@@ -169,9 +194,18 @@ fun QuizScreen(navController: NavController, category: String) {
                 ) {
                     Text(
                         text = option,
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(8.dp),
-                        textAlign = TextAlign.Center
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        fontSize = when {
+                            option.length > 25 -> 14.sp
+                            option.length > 15 -> 16.sp
+                            else -> 18.sp
+                        },
+                        maxLines = 2,
+                        softWrap = true,
+                        lineHeight = 20.sp
                     )
                 }
             }

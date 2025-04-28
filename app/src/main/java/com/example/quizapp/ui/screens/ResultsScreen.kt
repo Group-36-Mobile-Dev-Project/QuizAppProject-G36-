@@ -24,10 +24,10 @@ fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int,
     val shareMessage = "I got $score/$totalQuestions points in Beetlequiz!"
     val categoryColor = getCategoryColor(category)
 
-    // Inside ResultsScreen composable (before the Column)
     val slogan = when {
-        (score.toFloat() / totalQuestions.toFloat() >= 0.8f) -> "Very good, keep it up!"
-        (score.toFloat() / totalQuestions.toFloat() < 0.6f) -> "Try next time, keep it up!"
+        (score.toFloat() / totalQuestions.toFloat() == 1f) -> "Wow! Perfect score!"
+        (score.toFloat() / totalQuestions.toFloat() >= 0.8f) -> "Almost there, keep it up!"
+        (score.toFloat() / totalQuestions.toFloat() < 0.6f) -> "Better luck next time, keep it up!"
         else -> "Good effort, keep practicing!"
     }
 
