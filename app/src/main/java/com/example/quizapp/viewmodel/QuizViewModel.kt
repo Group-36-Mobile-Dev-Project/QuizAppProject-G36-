@@ -29,7 +29,8 @@ class QuizViewModel : ViewModel() {
                             category = doc.getString("category") ?: "",
                             question = doc.getString("question") ?: "",
                             options = options.shuffled(),
-                            correctAnswer = doc.getString("correctAnswer") ?: ""
+                            correctAnswer = doc.getString("correctAnswer") ?: "",
+                            imageUrl = doc.getString("imageUrl") ?: ""
                         )
                     }.shuffled()
 

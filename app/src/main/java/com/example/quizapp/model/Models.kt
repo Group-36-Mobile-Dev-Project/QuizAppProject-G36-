@@ -12,5 +12,6 @@ data class Question(
     val category: String = "",
     val question: String = "",
     val options: List<String> = emptyList(),
-    val correctAnswer: String = ""
+    val correctAnswer: String = "",
+    val imageUrl: String = ""
 )
