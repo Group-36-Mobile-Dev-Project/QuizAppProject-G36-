@@ -12,9 +12,9 @@
    - [Categories](#categories)
    - [Quizzes](#quizzes)
    - [Results](#results)
-4. [Contribution](#quizzes)
-5. [License](#quizzes)
-6. [Author](#quizzes)
+4. [Contribution](#contribution)
+5. [License](#license)
+6. [Author](#author)
 
 ## Introduction
 
